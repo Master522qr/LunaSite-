@@ -1,0 +1,27 @@
+LunaVisual — подключение новой базы Supabase
+
+Текущий проект:
+URL: https://pdibtleothnnmihhrbcr.supabase.co
+Publishable key: sb_publishable_f74qPRFJj8MQHT1L1Z3GIw_ue3Jx3yK
+
+1. Откройте проект https://pdibtleothnnmihhrbcr.supabase.co в Supabase.
+2. SQL Editor -> New query.
+3. Вставьте содержимое файла supabase_setup.sql и нажмите Run.
+4. После выполнения появятся таблицы profiles и license_keys, политики RLS и функция активации ключа.
+5. Authentication -> Users: создайте/перенесите нужные аккаунты пользователей.
+6. Storage: если используется загрузка клиента, создайте public bucket downloads и загрузите файл LunaVisual.exe либо измените путь в app.js на нужное имя файла.
+
+Важно: сайт больше не содержит URL или publishable key старого Supabase-проекта. Удаление самого старого проекта/его данных выполняется отдельно в панели Supabase владельцем проекта.
+
+
+Launcher integration:
+- Website download path: public Storage bucket downloads / LunaVisual.exe
+- Launcher should authenticate against the same Supabase project, then call RPC get_lunavisual_launcher_state().
+- The returned state contains user_id, email, nickname, hwid, subscription_active, subscription_until, is_admin and maintenance.
+- The launcher source/binary was not present in the provided website archive, so upload the actual LunaVisual.exe to the downloads bucket and implement the RPC call in the launcher source.
+
+ANTI-DDOS / ABUSE PROTECTION
+----------------------------
+После этого обновления обязательно снова выполните supabase_setup.sql: в нём
+добавлены серверные rate limits для генерации/активации ключей и лаунчера.
+Для сетевой DDoS-защиты прочитайте ANTI-DDOS-SETUP.txt и включите Cloudflare proxy/WAF.
